@@ -1,0 +1,68 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+
+<% if(successuserfixesvalidation) { %>
+    <div class="alert alert-success">
+        <%= successuserfixesvalidation %>
+    </div>
+<% } %>
+<h3>تسجيل اصلاحات المستخدم</h3>
+<% if(!infoitems.branch && !infoitems.fixtype) { %>
+    <form action="/userfixes" method="GET" class="user1">
+        <select class="input1" name="branchname" class="branchname" value="<%= infoitems.branch %>">
+            <option value="" disabled selected hidden>اختر الفرع</option>
+            <% for(let i=0 ; i<infoitems.branches.length ; i++) { %>
+            <option><%= infoitems.branches[i].name %></option>
+            <% } %>
+        </select><br />
+        <select class="input1" name="fixtype" class="fixtype" value="fixtype">
+            <option value="" disabled selected hidden>اختر نوع الاصلاح</option>
+            <% for(let i=0 ; i<infoitems.fixtypes.length ; i++) { %>
+                <option><%= infoitems.fixtypes[i].name %></option>
+            <% } %>
+        </select><br />
+        <input type="submit" value="ابدأ التسجيل" class="btn btn-primary" id="userbutton2" />             
+    </form>
+<% } else if(infoitems.cars.length == 0){ %>
+    <div class="alert alert-danger">لا توجد سيارات في فرع <%= infoitems.branch %> </div><br />
+    <a href="/userfixes"><button class="btn btn-danger">لاعادة الاختيار اضغط هنا</button></a>
+<% } else if(infoitems.fixes.length == 0){ %>
+    <div class="alert alert-danger">لا توجد اصلاحات للنوع <%= infoitems.fixtype %></div><br />
+    <a href="/userfixes"><button class="btn btn-danger">لاعادة الاختيار اضغط هنا</button></a>
+<% } else { %>
+        <div class="user2">
+        <form action="/userfixes" method="POST">
+        <input type="hidden" name="branch" value="<%= infoitems.branch %>" />
+        <select class="input1" id="title" onchange="getlive()">
+            <option value="" disabled selected hidden>اختر سيارة من فرع <%= infoitems.branch %></option>
+            <% for(let i=0 ; i<infoitems.cars.length ; i++) { %>
+                <option value="car model : <%= infoitems.cars[i].model %> - air_condition type : <%= infoitems.cars[i].aircondition_type %> - air_condition fix date : <%= infoitems.cars[i].aircondition_fixdate.toDateString()  %> - car license date : <%= infoitems.cars[i].carlicense_date.toDateString() %>"><%= infoitems.cars[i].name %></option>
+            <% } %>
+        </select><br />
+        <input type="hidden" id="live2" name="carname"  />
+        <textarea name="carinfo" rows="10" cols="30" id="live" style="text-align: center"></textarea><br />
+        <label>اذا كان تاريخ ترخيص السيارة غير الذي في معلومات السيارة برجاء تحديد التاريخ الخاص به</label><br />
+        <input class="input1" type="date" name="modifiedcarlicensedate" placeholder="enter the car licence date" /><br />
+        <input class="input1" type="text" name="workshop" placeholder="ادخل الورشة" /><br />
+        <input class="input1" type="number" name="counternumber" placeholder="ادخل رقم العداد" /><br />
+        <label>تاريخ بداية الصيانة</label><br />
+        <input class="input1" type="date" name="startdate" placeholder="enter the startdate" /><br />
+        <label>تاريخ نهاية الصيانة</label><br />
+        <input class="input1" type="date" name="enddate" placeholder="enter the enddate" /><br />
+        
+        <input type="hidden" name="fixtype" value="<%= infoitems.fixtype %>" />
+        <label>اختر الاصلاحات من النوع <%= infoitems.fixtype %></label><br />
+        <% for(let i=0 ; i<infoitems.fixes.length ; i++) { %>
+            <input type="checkbox" name="fixes" value="<%= infoitems.fixes[i].name %>">
+            <label for="<%= infoitems.fixes[i].name %>"><%= infoitems.fixes[i].name %></label><br>
+        <% } %>
+        <input class="input1" type="text" name="notes" placeholder="قم بأدخال اي ملاحظات" /><br />
+        <input type="submit" value="حفظ معلومات الصيانة" class="btn btn-success" /><br /><br />
+        </form>
+        <a href="/userfixes"><button class="btn btn-danger">لأعادة اختيار الفرع او نوع الاصلاح اضغط هنا</button></a><br />
+        </div>
+
+<% } %>
+
+
+<%- include('./parts/footer.ejs') %>

@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <% if(isadmin1) { %>
+      <a class="navbar-brand" style="color: white;">ADMIN 1</a>
+  <% } %>
+  <% if(isadmin2) { %>
+    <a class="navbar-brand" style="color: white;">ADMIN 2</a>
+  <% } %>
+  <% if(isuser && (!isadmin1 && !isadmin2)){ %>
+    <a class="navbar-brand" style="color: white;">USER</a>
+  <% } %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <% if(!isuser && !isadmin1 && !isadmin2) { %>
+        <li class="nav-item active">
+          <a class="nav-link" href="/">تسجيل الدخول</a>
+        </li>
+        <% if(userslength.length == 0){ %>
+        <li class="nav-item active">
+          <a class="nav-link" href="/signup">تسجيل ادمن 1</a>
+        </li>
+        <% } %>
+        <% } %>
+        <% if(isadmin1 || isadmin2){ %>
+        <li class="nav-item">
+          <a class="nav-link" href="/branch">ادارة الفروع</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/carstypes">ادارة انواع السيارات</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cars">ادارة السيارات</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/carssearch">البحث عن السيارات</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/fixesofusers">اصلاحات المستخدمين</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/viewdailylisting">متابعة تسجيلات العدادات</a>
+          </li>
+          <% } %>
+          <% if(isuser && (!isadmin1 && !isadmin2)){ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/userfixes">اصلاحات المستخدم</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/dailylisting">تسجيل العداد اليومي</a>
+          </li>
+          <% } %>
+          <% if(isadmin1) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/fixestypes">ادارة انواع الاصلاحات</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/fixes">ادارة الاصلاحات</a>
+            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/users">ادارة المستخدمين</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admins">ادارة الادمنز</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/forgettenlist">كلمات مرور مفقودة</a>
+          </li>
+          <% } %>
+          <% if(isuser) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/account">تغيير كلمة المرور</a>
+            </li>
+          <% } %>
+      </ul>
+      <% if(isuser) { %>
+        <form action='/logout' method='post'>
+        <input type="submit" value="تسجيل خروج" class="btn btn-danger">
+        </form>
+      <% } %>
+    </div>
+  </nav>

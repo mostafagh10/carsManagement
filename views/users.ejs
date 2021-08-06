@@ -1,0 +1,45 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+<% if(userflash) { %>
+    <div class="alert alert-danger">
+        <%= userflash %>
+    </div>
+<% } %>
+
+<% if(usersvalidation) { %>
+    <div class="alert alert-danger">
+        <%= usersvalidation.msg %>
+    </div>
+<% } %>
+<form action="/users" method="POST">
+
+    <input class="input1" type="text" name="email" placeholder="ادخل البريد الالكتروني للمستخدم" /><br />
+    <input type="submit" value="اضافة مستخدم" class="btn btn-primary" />
+</form>
+
+<% if(users.length == 0) { %>
+    <div class="alert">لا يوجد مستخدمين تم اضافتهم حتى الان</div>
+<% } else { %>
+    <div class="alert">يوجد <%= users.length %> مستخدمين</div>
+    <table>
+        <thead>
+            <th>البريد الالكتروني للمستخدم</th>
+            <th>الغاء المستخدم</th>
+        </thead>
+        <tbody>
+            <% for(let i=0 ; i<users.length ; i++) { %>
+            <tr>
+                <td data-label="البريد الالكتروني للمستخدم"><%= users[i].email %></td>
+                <td data-label="الغاء المستخدم">
+                    <form action="/users/delete" method="POST">
+                        <input type="hidden" name="userid" value="<%= users[i]._id %>"/>
+                        <input type="submit" value="الغاء المستخدم" class="btn btn-danger" />             
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>

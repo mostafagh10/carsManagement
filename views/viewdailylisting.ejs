@@ -1,0 +1,65 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+    <form action="/viewdailylisting" method="GET" class="user1">
+        <select class="input1" name="branchname" class="branchname" value="<%= infoitems.branch %>">
+            <option value="" disabled selected hidden>اختر الفرع</option>
+            <% for(let i=0 ; i<infoitems.branches.length ; i++) { %>
+            <option><%= infoitems.branches[i].name %></option>
+            <% } %>
+        </select><br />
+        <input type="submit" value="التالي" class="btn btn-primary" />             
+    </form>
+    <% if(!infoitems.branch){ %>
+        <div></div>
+    <% } else if(infoitems.cars.length == 0){ %>
+        <div>لا توجد سيارات في فرع <%= infoitems.branch %></div>
+    <% } else { %>
+    <form action="/viewdailylisting" method="GET" class="user1">
+        <select class="input1" name="carname" class="carname" value="<%= infoitems.car %>">
+            <option value="" disabled selected hidden>اختر سيارة من فرع <%= infoitems.branch %></option>
+            <% for(let i=0 ; i<infoitems.cars.length ; i++) { %>
+            <option><%= infoitems.cars[i].name %></option>
+            <% } %>
+        </select><br />
+        <input type="submit" value="بحث" class="btn btn-primary" />       
+    </form>
+    <% } %>
+    <% if(!infoitems.name){ %>
+        <div></div>
+    <% } else { %>
+        <div class="alert">يوجد <%= infoitems.cars2.length %> اصلاحات يومية</div>
+        <table>
+            <thead>
+                <th>رقم السيارة</th>
+                <th>التاريخ</th>
+                <th>العداد السابق</th>
+                <th>العداد الحالي</th>
+                <th>عدد لترات الوقود</th>
+                <th>معدل الاستهلاك</th>
+                <th>الغاء التسجيل</th>
+            </thead>
+            <tbody>
+                <% for(let i=0 ; i<infoitems.cars2.length ; i++) { %>
+                <tr>
+                    <td data-label="رقم السيارة"><%= infoitems.cars2[i].carname %></td>
+                    <td data-label="التاريخ"><%= infoitems.cars2[i].Dateoflisting %></td>
+                    <td data-label="العداد السابق"><%= infoitems.cars2[i].lastcounter %></td>
+                    <td data-label="العداد الحالي"><%= infoitems.cars2[i].presentcounter %></td>
+                    <td data-label="عدد لترات الوقود"><%= infoitems.cars2[i].number_of_liters_of_fuel %></td>
+                    <td data-label="معدل الاستهلاك"><%= infoitems.cars2[i].consumption_rate %></td>
+                    <td data-label="الغاء التسجيل">
+                        <form action="/viewdailylisting/delete" method="POST">
+                            <input type="hidden" name="dailylistingid" value="<%= infoitems.cars2[i]._id %>"/>
+                            <input type="hidden" name="path" value="/viewdailylisting?carname=<%= infoitems.name %>" />
+                            <input type="submit" value="الغاء التسجيل" class="btn btn-danger" />             
+                        </form>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    <% } %>
+
+
+
+<%- include('./parts/footer.ejs') %>

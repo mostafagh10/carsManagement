@@ -1,0 +1,66 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+    <form action="/carssearch" method="GET" class="user1">
+        <select class="input1" name="branchname" class="branchname" value="<%= infoitems.branch %>">
+            <option value="" disabled selected hidden>اختر الفرع</option>
+            <% for(let i=0 ; i<infoitems.branches.length ; i++) { %>
+            <option><%= infoitems.branches[i].name %></option>
+            <% } %>
+        </select><br />
+        <input type="submit" value="التالي" class="btn btn-primary" />             
+    </form>
+    <% if(!infoitems.branch){ %>
+        <div></div>
+    <% } else if(infoitems.cars.length == 0){ %>
+        <div>لا توجد سيارات في فرع <%= infoitems.branch %></div>
+    <% } else { %>
+    <form action="/carssearch" method="GET" class="user1">
+        <select class="input1" name="carname" class="carname" value="<%= infoitems.car %>">
+            <option value="" disabled selected hidden>اختر سيارة من فرع <%= infoitems.branch %></option>
+            <% for(let i=0 ; i<infoitems.cars.length ; i++) { %>
+            <option><%= infoitems.cars[i].name %></option>
+            <% } %>
+        </select><br />
+        <input type="submit" value="بحث" class="btn btn-primary" />       
+    </form>
+    <% } %>
+    <table>
+        <thead>
+            <th>رقم السيارة</th>
+            <th>الموديل</th>
+            <th>نوع السيارة</th>
+            <th>الفرع</th>
+            <th>نوع المبرد</th>
+            <th>تاريخ صيانة المبرد</th>
+            <th>تاريخ ترخيص السيارة</th>
+            <th>تعديل</th>
+            <th>الغاء السيارة</th>
+        </thead>
+        <tbody>
+<% for(let i=0 ; i<infoitems.cars2.length ; i++) { %>
+        <tr>
+            <td data-label="رقم السيارة"><%= infoitems.cars2[i].name %></td>
+            <td data-label="الموديل"><%= infoitems.cars2[i].model %></td>
+            <td data-label="نوع السيارة"><%= infoitems.cars2[i].cartype %></td>
+            <td data-label="الفرع"><%= infoitems.cars2[i].branch %></td>
+            <td data-label="نوع المبرد"><%= infoitems.cars2[i].aircondition_type %></td>
+            <td data-label="تاريخ صيانة المبرد"><%= infoitems.cars2[i].aircondition_fixdate.toDateString() %></td>
+            <td data-label="تاريخ ترخيص السيارة"><%= infoitems.cars2[i].carlicense_date.toDateString() %></td>
+            <td data-label="تعديل">
+                <input type="hidden" name="carid" value="<%= infoitems.cars2[i]._id %>"/>
+                <a href="/updatecar1/<%= infoitems.cars2[i]._id %>"><input type="submit" value="تاريخ صيانة المبرد" class="btn btn-primary" /></a><br /><br />
+                <a href="/updatecar2/<%= infoitems.cars2[i]._id %>"><input type="submit" value="تاريخ ترخيص السيارة" class="btn btn-primary" /></a>          
+            </td>
+        <td data-label="الغاء السيارة">
+            <form action="/cars/delete" method="POST">
+                <input type="hidden" name="carid" value="<%= infoitems.cars2[i]._id %>"/>
+                <input type="submit" value="الغاء السيارة" class="btn btn-danger" />             
+            </form>
+        </td>
+        </tr>
+<% } %>
+</tbody>
+</table>
+
+
+<%- include('./parts/footer.ejs') %>

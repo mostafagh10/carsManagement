@@ -1,0 +1,44 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+<% if(branchflash) { %>
+    <div class="alert alert-danger">
+        <%= branchflash %>
+    </div>
+<% } %>
+<% if(branchvalidation) { %>
+    <div class="alert alert-danger">
+        <%= branchvalidation.msg %>
+    </div>
+<% } %>
+<form action="/branch" method="POST">
+
+    <input class="input1" type="text" name="name" placeholder="ادخل اسم الفرع" /><br />
+    <input type="submit" value="اضافة فرع" class="btn btn-primary" />
+</form>
+
+<% if(branches.length == 0) { %>
+    <div class="alert">لا يوجد فروع قد تم اضافتها حتى الان</div>
+<% } else { %>
+    <div class="alert">يوجد <%= branches.length %> فروع</div>
+    <table>
+        <thead>
+            <th>اسم الفرع</th>
+            <th>الغاء الفرع</th>
+        </thead>
+        <tbody>
+            <% for(let i=0 ; i<branches.length ; i++) { %>
+            <tr>
+                <td data-label="اسم الفرع"><%= branches[i].name %></td>
+                <td data-label="الغاء الفرع">
+                    <form action="/branch/delete" method="POST">
+                        <input type="hidden" name="branchid" value="<%= branches[i]._id %>"/>
+                        <input type="submit" value="الغاء الفرع" class="btn btn-danger" />             
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>

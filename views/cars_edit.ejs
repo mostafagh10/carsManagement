@@ -1,0 +1,24 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+<% if(aircondfixdatevalidation) { %>
+    <div class="alert alert-danger">
+        <%= aircondfixdatevalidation.msg %>
+    </div>
+<% } %>
+<% if(successeditvalidation) { %>
+    <div class="alert alert-success">
+        <%= successeditvalidation %>
+    </div>
+<% } %>
+<h2><%= car.name %> : رقم السيارة</h2>
+<h2>تاريخ صيانة المبرد المراد تعديله</h2>
+<h2><%= car.aircondition_fixdate.toDateString() %></h2>
+<form action="/updatecar1/:id" method="POST">
+    <input type="hidden" name="carid" value="<%= car._id %>" />
+    <input type="hidden" name="path" value="/updatecar1/<%= car._id %>" />
+    <label>ادخل تاريخ صيانة المبرد</label><br/>
+    <input class="input1" type="date" name="aircondition_fix_date" /><br />
+    <input type="submit" value="تعديل التاريخ" class="btn btn-primary" />
+</form>
+
+<%- include('./parts/footer.ejs') %>

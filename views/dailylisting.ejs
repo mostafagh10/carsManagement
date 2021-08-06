@@ -1,0 +1,66 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+<% if(listingvalidation) { %>
+    <div class="alert alert-danger">
+        <%= listingvalidation.msg %>
+    </div>
+<% } %>
+<% if(successlistingvalidation) { %>
+    <div class="alert alert-success">
+        <%= successlistingvalidation %>
+    </div>
+<% } %>
+<h3>تسجيل العداد اليومي</h3>
+    <% if(!infoitems.name){ %>
+    <form action="/dailylisting" method="GET" class="user1">
+        <select class="input1" name="branchname" class="branchname" value="<%= infoitems.branch %>">
+            <option value="" disabled selected hidden>اختر الفرع</option>
+            <% for(let i=0 ; i<infoitems.branches.length ; i++) { %>
+            <option><%= infoitems.branches[i].name %></option>
+            <% } %>
+        </select><br />
+        <input type="submit" value="التالي" class="btn btn-primary" />             
+    </form>
+    <% } else { %>
+        <div></div>
+    <% } %>
+    <% if(!infoitems.branch){ %>
+        <div></div>
+    <% } else if(infoitems.cars.length == 0){ %>
+        <div>لا توجد سيارات في فرع <%= infoitems.branch %></div>
+    <% } else { %>
+    <form action="/dailylisting" method="GET" class="user1">
+        <select class="input1" name="carname" class="carname" value="<%= infoitems.car %>">
+            <option value="" disabled selected hidden>اختر سيارة من فرع <%= infoitems.branch %></option>
+            <% for(let i=0 ; i<infoitems.cars.length ; i++) { %>
+            <option><%= infoitems.cars[i].name %></option>
+            <% } %>
+        </select><br />
+        <input type="submit" value="بحث" class="btn btn-primary" />       
+    </form>
+    <% } %>
+    <% if(!infoitems.name){ %>
+        <div></div>
+    <% } else { %>
+    <form action="/dailylisting" method="POST">
+        <input type="hidden" name="path" value="/dailylisting?carname=<%= infoitems.name  %>" />
+        <input class="input1" type="text" name="carname" value="<%= infoitems.name %>" readonly /><br />
+        <% if(infoitems.cars2.length == 0) { %>
+            <input id="lastcounter" class="input1" type="number" name="lastcounter" value="0" readonly /><br />
+        <% } else { %>
+            <input id="lastcounter" class="input1" type="number" name="lastcounter" value="<%= infoitems.cars2[0].presentcounter %>" readonly /><br />
+        <% } %>
+        <input id="presentcounter" class="input1" type="number" name="presentcounter" placeholder="العداد الحالي" /><br />
+        <input id="numofliters" class="input1" type="number" name="numofliters" placeholder="عدد لترات الوقود" /><br />
+        <label>التاريخ</label><br />
+        <input class="input1" type="date" name="dateoflisting" /><br />
+        <label>معدل الاستهلاك</label><br />
+        <input id="rate" class="input1" type="number" name="rate" placeholder="معدل الاستهلاك" readonly /><br />
+        <input type="submit" value="حفظ" class="btn btn-primary" /><br /><br />
+    </form>
+    <a href="/dailylisting"><button class="btn btn-danger">اعادة اختيار الفرع</button></a>
+    <% } %>
+
+
+
+<%- include('./parts/footer.ejs') %>

@@ -1,0 +1,23 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+<% if(changepasswordvalidation) { %>
+    <div class="alert alert-danger">
+        <%= changepasswordvalidation.msg %>
+    </div>
+<% } %>
+<% if(successupdatepasswordvalidation) { %>
+    <div class="alert alert-success">
+        <%= successupdatepasswordvalidation %>
+    </div>
+<% } %>
+<div class="login">
+<h2>بريدك الالكتروني</h2>
+<h8><%= account.email %></h8>
+<form action="/account" method="POST">
+    <input type="hidden" name="accountid" value="<%= account._id %>" />
+    <input class="input1" type="password" name="changepassword" placeholder="تغيير كلمة المرور" /><br /><br />
+    <input type="submit" value="تغيير كلمة المرور" class="btn btn-danger" />
+</form>
+</div>
+
+<%- include('./parts/footer.ejs') %>

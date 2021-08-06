@@ -1,0 +1,30 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+
+<% if(forgettenlist.length == 0) { %>
+    <div class="alert">لا يوجد مستخدمين قد فقدوا كلمة مرورهم</div>
+<% } else { %>
+    <div class="alert">يوجد <%= forgettenlist.length %> مستخدمين فقدوا كلمة مرورهم</div>
+    <table>
+        <thead>
+            <th>البريد الالكتروني</th>
+            <th>اعادة كلمة المرور الى الاصل</th>
+        </thead>
+        <tbody>
+            <% for(let i=0 ; i<forgettenlist.length ; i++) { %>
+            <tr>
+                <td data-label="البريد الالكتروني"><%= forgettenlist[i].email %></td>
+                <td data-label="اعادة كلمة المرور الى الاصل">
+                    <form action="/forgettenlist" method="POST">
+                        <input type="hidden" name="email" value="<%= forgettenlist[i].email %>"/>
+                        <input type="hidden" name="forgettenuserid" value="<%= forgettenlist[i]._id %>"/>
+                        <input type="submit" value="الاعادة الى الاصل" class="btn btn-danger" />             
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>

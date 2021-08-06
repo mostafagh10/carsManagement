@@ -1,0 +1,86 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+<% if(successdownloadvalidation){ %>
+    <div class="alert alert-success">
+    <%= successdownloadvalidation %>
+    </div>
+<% } %>
+<form action="/fixesofusers" method="GET" class="user1">
+    <select class="input1" name="branchname" class="branchname" value="<%= infoitems.branch %>">
+        <option value="" disabled selected hidden>اختر الفرع</option>
+        <% for(let i=0 ; i<infoitems.branches.length ; i++) { %>
+        <option><%= infoitems.branches[i].name %></option>
+        <% } %>
+    </select><br />
+    <input type="submit" value="التالي" class="btn btn-primary" />             
+</form>
+<% if(!infoitems.branch){ %>
+    <div></div>
+<% } else if(infoitems.cars.length == 0){ %>
+    <div>لا توجد سيارات في فرع <%= infoitems.branch %></div>
+<% } else { %>
+<form action="/fixesofusers" method="GET" class="user1">
+    <select class="input1" name="carname" class="carname" value="<%= infoitems.car %>">
+        <option value="" disabled selected hidden>اختر سيارة من فرع <%= infoitems.branch %></option>
+        <% for(let i=0 ; i<infoitems.cars.length ; i++) { %>
+        <option><%= infoitems.cars[i].name %></option>
+        <% } %>
+    </select><br />
+    <input type="submit" value="بحث" class="btn btn-primary" />       
+</form>
+<% } %>
+    <% if(!infoitems.name){ %>
+        <div></div>
+<% } else { %>
+    <div class="alert">يوجد <%= infoitems.cars2.length %> اصلاحات للمستخدمين</div>
+    <table>
+        <thead>
+            <th>الفرع</th>
+            <th>رقم السيارة</th>
+            <th>معلومات عن السيارة</th>
+            <th>تاريخ ترخيص السيارة معدلة من قبل المستخدم</th>
+            <th>الورشة</th>
+            <th>رقم العداد</th>
+            <th>تاريخ البداية</th>
+            <th>تاريخ النهاية</th>
+            <th>نوع الاصلاح</th>
+            <th>الاصلاحات</th>
+            <th>ملاحظات اضافية</th>
+            <th>تحميل</th>
+            <th>الغاء</th>
+        </thead>
+        <tbody>
+            <% for(let i=0 ; i<infoitems.cars2.length ; i++) { %>
+            <tr>
+                <td data-label="الفرع"><%= infoitems.cars2[i].branch %></td>
+                <td data-label="رقم السيارة"><%= infoitems.cars2[i].carname %></td>
+                <td data-label="معلومات عن السيارة"><%= infoitems.cars2[i].carinfo %></td>
+                <td data-label="تاريخ ترخيص السيارة معدلة من قبل المستخدم"><%= infoitems.cars2[i].modifiedcarlicensedate %></td>
+                <td data-label="الورشة"><%= infoitems.cars2[i].workshop %></td>
+                <td data-label="رقم العداد"><%= infoitems.cars2[i].counternumber %></td>
+                <td data-label="تاريخ البداية"><%= infoitems.cars2[i].startdate %></td>
+                <td data-label="تاريخ النهاية"><%= infoitems.cars2[i].enddate %></td>
+                <td data-label="نوع الاصلاح"><%= infoitems.cars2[i].fixtype %></td>
+                <td data-label="الاصلاحات"><%= infoitems.cars2[i].fixes %></td>
+                <td data-label="ملاحظات اضافية"><%= infoitems.cars2[i].notes %></td>
+                <td data-label="تحميل">
+                    <form action="/fixesofusers/download" method="POST">
+                        <input type="hidden" name="fixesid" value="<%= infoitems.cars2[i]._id %>" />
+                        <input type="hidden" name="path" value="/fixesofusers?carname=<%= infoitems.name %>" />
+                        <button type="submit" class="btn btn-success">تحميل</button>
+                    </form>
+                </td>
+                <td data-label="الغاء">
+                    <form action="/fixesofusers/delete" method="POST">
+                        <input type="hidden" name="userfixesid" value="<%= infoitems.cars2[i]._id %>"/>
+                        <input type="hidden" name="path" value="/fixesofusers?carname=<%= infoitems.name %>" />
+                        <input type="submit" value="الغاء" class="btn btn-danger" />             
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>

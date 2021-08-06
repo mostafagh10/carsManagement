@@ -1,0 +1,45 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+<% if(fixtypesflash) { %>
+    <div class="alert alert-danger">
+        <%= fixtypesflash %>
+    </div>
+<% } %>
+
+<% if(fixtypesvalidation) { %>
+    <div class="alert alert-danger">
+        <%= fixtypesvalidation.msg %>
+    </div>
+<% } %>
+<form action="/fixestypes" method="POST">
+
+    <input class="input1" type="text" name="name" placeholder="ادخل نوع الاصلاح" /><br />
+    <input type="submit" value="اضافة نوع اصلاح" class="btn btn-primary" />
+</form>
+
+<% if(fixtypes.length == 0) { %>
+    <div class="alert">لا توجد انواع اصلاحات تم اضافتها حتى الان</div>
+<% } else { %>
+    <div class="alert">يوجد <%= fixtypes.length %> انواع اصلاحات</div>
+    <table>
+        <thead>
+            <th>نوع الاصلاح</th>
+            <th>الغاء نوع الاصلاح</th>
+        </thead>
+        <tbody>
+            <% for(let i=0 ; i<fixtypes.length ; i++) { %>
+            <tr>
+                <td data-label="نوع الاصلاح"><%= fixtypes[i].name %></td>
+                <td data-label="الغاء نوع الاصلاح">
+                    <form action="/fixestypes/delete" method="POST">
+                        <input type="hidden" name="fixtypeid" value="<%= fixtypes[i]._id %>"/>
+                        <input type="submit" value="الغاء نوع الاصلاح" class="btn btn-danger" />             
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>

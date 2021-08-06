@@ -1,0 +1,51 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+
+<% if(fixitems.fixestypes.length == 0) { %>
+    <div class="alert">يجب ادخال على الاقل نوع اصلاح واحد لتسجيل الاصلاحات</div>
+<% } else { %>
+    <% if(fixvalidation) { %>
+        <div class="alert alert-danger">
+            <%= fixvalidation.msg %>
+        </div>
+    <% } %>
+<form action="/fixes" method="POST">
+    <select class="input1" name="fixtype">
+        <option value="" disabled selected hidden>اختار نوع الاصلاح</option>
+        <% for(let i=0 ; i<fixitems.fixestypes.length ; i++) {  %>
+            <option><%= fixitems.fixestypes[i].name %></option>
+        <% } %>
+    </select><br />
+    <input class="input1" type="text" name="name" placeholder="ادخل اسم الاصلاح" /><br />
+    <input type="submit" value="اضافة نوع اصلاح" class="btn btn-primary" />
+</form>
+<% } %>
+
+<% if(fixitems.fixes.length == 0) { %>
+    <div class="alert">لا توجد اصلاحات تم اضافتها حتى الان</div>
+<% } else { %>
+    <div class="alert">توجد <%= fixitems.fixes.length %> اصلاحات</div>
+    <table>
+        <thead>
+            <th>نوع الاصلاح</th>
+            <th>اسم الاصلاح</th>
+            <th>الغاء الاصلاح</th>
+        </thead>
+        <tbody>
+            <% for(let i=0 ; i<fixitems.fixes.length ; i++) { %>
+            <tr>
+                <td data-label="نوع الاصلاح"><%= fixitems.fixes[i].fixtype %></td>
+                <td data-label="اسم الاصلاح"><%= fixitems.fixes[i].name %></td>
+                <td data-label="الغاء الاصلاح">
+                    <form action="/fixes/delete" method="POST">
+                        <input type="hidden" name="fixid" value="<%= fixitems.fixes[i]._id %>"/>
+                        <input type="submit" value="الغاء الاصلاح" class="btn btn-danger" />             
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>

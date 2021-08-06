@@ -1,0 +1,24 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+<% if(carlicensedatevalidation) { %>
+    <div class="alert alert-danger">
+        <%= carlicensedatevalidation.msg %>
+    </div>
+<% } %>
+<% if(successedit2validation) { %>
+    <div class="alert alert-success">
+        <%= successedit2validation %>
+    </div>
+<% } %>
+<h2><%= car.name %> : رقم السيارة</h2>
+<h2>تاريخ ترخيص السيارة المراد تعديله</h2>
+<h2><%= car.carlicense_date.toDateString() %></h2>
+<form action="/updatecar2/:id" method="POST">
+    <input type="hidden" name="carid" value="<%= car._id %>" />
+    <input type="hidden" name="path" value="/updatecar2/<%= car._id %>" />
+    <label>ادخل تاريخ ترخيص السيارة</label><br />
+    <input class="input1" type="date" name="carlicense_date" /><br />
+    <input type="submit" value="تعديل التاريخ" class="btn btn-primary" />
+</form>
+
+<%- include('./parts/footer.ejs') %>

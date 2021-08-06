@@ -1,0 +1,35 @@
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script>
+    //$(document).ready(function(){
+        $(window).on('load',function(){
+            $("body").css("overflow","auto")
+            $(".overlay1").fadeOut(1000,function(){
+                $(".loadingoverlay").fadeOut(500,function(){
+                    $(this).remove()
+                })
+            });
+        })
+    //});
+    function getlive(){
+        var x = document.getElementById('title')
+        document.getElementById('live').innerHTML = x[x.selectedIndex].value
+        document.getElementById('live2').value = x[x.selectedIndex].text
+    }
+
+    // dailylisting 
+    var lastcounter = document.getElementById('lastcounter');
+    var presentcounter = document.getElementById('presentcounter');
+    var numofliters = document.getElementById('numofliters');
+    var rate = document.getElementById('rate');
+    presentcounter.onkeyup = function() {
+        'use strict';
+        rate.value = (this.value-lastcounter.value)/numofliters.value
+    }
+    numofliters.onkeyup = function() {
+        'use strict';
+        rate.value = (presentcounter.value-lastcounter.value)/this.value
+    }
+</script>
+</body>
+</html>

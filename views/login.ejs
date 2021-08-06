@@ -1,0 +1,30 @@
+<%- include('./parts/header.ejs') %>
+<% if(userslength == 0){ %>
+<%- include('./parts/body.ejs') %>
+<% } %>
+<div class="loginbody">
+<% if(loginflash) { %>
+<div class="alert alert-danger">
+        <%= loginflash %>
+</div>
+<% } %>
+<div class="login">
+        <div class="loginimage">
+                <img src="/images/logo3.jpg" width="140" height="140" />
+        </div>
+        <h2>تسجيل الدخول</h2>
+        <form action="/" method="POST">
+                <input class="input1" type="text" name="email" placeholder="ادخل البريد الالكتروني" /><br />
+                <input class="input1" type="password" name="password" placeholder="ادخل كلمة المرور" /><br /><br />
+                <input type="submit" value="تسجيل الدخول" style="width: 50%;" class="btn btn-primary" />
+        </form><br />
+        <a href="/forgetpassword" style="color: white;">هل نسيت كلمة المرور ؟</a>
+</div>
+</div>
+<section class="loadingoverlay">
+   <div class="overlay1">
+           <img src="/images/logo3.jpg" width="200px" height="200px"/><br />
+           <div class="lds-ellipsis"><div></div><div></div><div></div>
+   </div>
+</section>
+<%- include('./parts/footer.ejs') %>

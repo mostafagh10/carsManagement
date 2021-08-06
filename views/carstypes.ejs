@@ -1,0 +1,46 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+
+<% if(carstypesflash) { %>
+    <div class="alert alert-danger">
+        <%= carstypesflash %>
+    </div>
+<% } %>
+
+<% if(carstypesvalidation) { %>
+    <div class="alert alert-danger">
+        <%= carstypesvalidation.msg %>
+    </div>
+<% } %>
+<form action="/carstypes" method="POST">
+
+    <input class="input1" type="text" name="name" placeholder="ادخل نوع السيارة" /><br />
+    <input type="submit" value="اضافة نوع السيارة" class="btn btn-primary" />
+</form>
+
+<% if(carstypes.length == 0) { %>
+    <div class="alert">لا يوجد انواع سيارات تم اضافتها حتى الان</div>
+<% } else { %>
+    <div class="alert">يوجد <%= carstypes.length %> انواع سيارات</div>
+    <table>
+        <thead>
+            <th>نوع السيارة</th>
+            <th>الغاء نوع السيارة</th>
+        </thead>
+        <tbody>
+            <% for(let i=0 ; i<carstypes.length ; i++) { %>
+            <tr>
+                <td data-label="نوع السيارة"><%= carstypes[i].name %></td>
+                <td data-label="الغاء نوع السيارة">
+                    <form action="/carstypes/delete" method="POST">
+                        <input type="hidden" name="carstypeid" value="<%= carstypes[i]._id %>"/>
+                        <input type="submit" value="الغاء نوع السيارة" class="btn btn-danger" />             
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>

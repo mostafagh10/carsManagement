@@ -1,0 +1,46 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+
+<% if(adminflash) { %>
+    <div class="alert alert-danger">
+        <%= adminflash %>
+    </div>
+<% } %>
+
+<% if(adminsvalidation) { %>
+    <div class="alert alert-danger">
+        <%= adminsvalidation.msg %>
+    </div>
+<% } %>
+<form action="/admins" method="POST">
+
+    <input class="input1" type="text" name="email" placeholder="ادخل البريد الالكتروني للادمن" /><br />
+    <input type="submit" value="اضافة ادمن" class="btn btn-primary" />
+</form>
+
+<% if(admins.length == 0) { %>
+    <div class="alert">لا يوجد ادمن تم اضافته حتى الان</div>
+<% } else { %>
+    <div class="alert">يوجد <%= admins.length %> ادمنز</div>
+    <table>
+        <thead>
+            <th>البريد الالكتروني للادمن</th>
+            <th>الغاء الادمن</th>
+        </thead>
+        <tbody>
+            <% for(let i=0 ; i<admins.length ; i++) { %>
+            <tr>
+                <td data-label="البريد الالكتروني للادمن"><%= admins[i].email %></td>
+                <td data-label="الغاء الادمن">
+                    <form action="/admins/delete" method="POST">
+                        <input type="hidden" name="adminid" value="<%= admins[i]._id %>"/>
+                        <input type="submit" value="الغاء الادمن" class="btn btn-danger" />             
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>

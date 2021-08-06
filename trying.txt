@@ -1,0 +1,155 @@
+exports.postinlogin = (email,password)=> {
+    //check if email exists
+    //no ==> error the email is not found
+    //yes ==> check the password
+    //no ==> error wrong password
+    //yes ==> set session
+
+    return new Promise((resolve,reject) => {
+        mongoose.connect(dburl).then(()=>
+        theuser.findOne({email:email})
+        ).then(userfound => {
+            if(!userfound){
+                mongoose.disconnect();
+                reject("بريد الكتروني غير صحيح");
+            }
+            else{
+                /*
+                 bcrypt.compare(password,userfound.password).then(same => {
+                    if(!same){
+                        mongoose.disconnect();
+                        reject("passowrd is incorrect");
+                    }
+                    else{
+                        mongoose.disconnect()
+                        resolve(userfound._id)
+                    }
+            })
+            */
+           if(password!= userfound.password){
+            mongoose.disconnect();
+            reject("كلمة مرور غير صحيحة");
+           }
+           else{
+            mongoose.disconnect()
+            const id = userfound._id
+            const isadmin1 = userfound.isAdmin1
+            const isadmin2 =  userfound.isAdmin2
+            const userdata = {id,isadmin1,isadmin2}
+            resolve(userdata)
+           }
+            }
+        }).catch(err => {
+            mongoose.disconnect();
+            reject("err");
+        })
+    })
+}
+
+
+
+exports.editpassword = (id,newdata) => {
+
+    return new Promise((resolve,reject) => {
+
+        mongoose.connect(dburl).then(() => {
+            theuser.updateOne({_id : id},newdata).then(() => {
+                mongoose.disconnect();
+                resolve('passo=word changed')
+            }).catch(err => reject(err))
+        })
+      }
+    )
+}
+
+
+------------------------------------------------------------------------------------
+exports.postinsignup = (email,password) => {
+
+    return new Promise((resolve,reject) => {
+
+        mongoose.connect(dburl).then(() => {
+            theuser.findOne({email:email}).then((user) => {
+                if(user){
+                    mongoose.disconnect();
+                    reject("هذا المستخدم موجود ... برجاء ادخال بريد الكتروني اخر")
+                }
+                else{
+                    let user = new theuser ({
+                        email:email,
+                        password:bcrypt.hash(password,10),
+                        isAdmin1:true
+                    })
+                    return user.save().then(() => {
+                        mongoose.disconnect();
+                        resolve()
+                    });
+                }
+            })
+            
+        })
+            .catch(err => reject(err))
+        })
+}
+--------------------------------------------------------------------------------------
+exports.postinadduser= (email) => {
+
+    return new Promise((resolve,reject) => {
+
+        mongoose.connect(dburl).then(() => {
+            theuser.findOne({email:email}).then((user) => {
+                if(user){
+                    mongoose.disconnect();
+                    reject("هذا المستخدم موجود ... برجاء ادخال بريد الكتروني اخر")
+                }
+                else{
+                    const hashedpassword = bcrypt.hash(password,10)
+                    let user = new theuser ({
+                        email:email,
+                        password:hashedpassword
+                    })
+                    return user.save().then(() => {
+                        mongoose.disconnect();
+                        resolve()
+                    });
+                }
+            })
+            
+        })
+            .catch(err => reject(err))
+        })
+}
+-------------------------------------------------------------------------------------
+exports.postinaddadmin= (email) => {
+
+    return new Promise((resolve,reject) => {
+
+        mongoose.connect(dburl).then(() => {
+            theuser.findOne({email:email}).then((admin) => {
+                if(admin){
+                    mongoose.disconnect();
+                    reject("هذا الادمن موجود... برجاء ادخال بريد الكتروني اخر")
+                }
+                else{
+                    const hashedpassword = bcrypt.hash(password,10)
+                    let admin = new theuser ({
+                        email:email,
+                        password:hashedpassword,
+                        isAdmin2:true
+                    })
+                    return admin.save().then(() => {
+                        mongoose.disconnect();
+                        resolve()
+                    });
+                }
+            })
+        })
+            .catch(err => reject(err))
+        })
+}
+-------------------------------------------------------------------------------
+infoitems.cars2.length - 1
+-------------------------------------------------------------------------------
+password : tsaCFDK0LVvAPYdo
+---------------------------------------------------------------------------------
+link : mongodb+srv://mostafaghazaly:<password>@cluster0.lsbie.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

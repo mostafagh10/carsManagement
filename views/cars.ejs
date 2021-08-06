@@ -1,0 +1,87 @@
+<%- include('./parts/header.ejs') %>
+<%- include('./parts/body.ejs') %>
+
+<% if(caritems.branches.length == 0) { %>
+    <div class="alert">YOU MUST ADD 1 BRANCH AT LEAST TO RECORD CAR</div>
+<% } else if (caritems.carstypes.length == 0) { %>
+    <div class="alert">YOU MUST ADD 1 CAR TYPE AT LEAST TO RECORD CAR</div>
+<% } else { %>
+    <% if(carflash) { %>
+        <div class="alert alert-danger">
+            <%= carflash %>
+        </div>
+    <% } %>
+
+    <% if(carvalidation) { %>
+        <div class="alert alert-danger">
+            <%= carvalidation.msg %>
+        </div>
+    <% } %>
+<form action="/cars" method="POST">
+    <select class="input1" name="branch">
+        <option value="" disabled selected hidden>اختر الفرع</option>
+        <% for(let i=0 ; i<caritems.branches.length ; i++) {  %>
+            <option><%= caritems.branches[i].name %></option>
+        <% } %>
+    </select><br />
+    <input class="input1" type="text" name="name" placeholder="ادخل رقم السيارة" /><br />
+    <select class="input1" name="cartype">
+        <option value="" disabled selected hidden>اختر نوع السيارة</option>
+        <% for(let i=0 ; i<caritems.carstypes.length ; i++) {  %>
+            <option><%= caritems.carstypes[i].name %></option>
+        <% } %>
+    </select><br />
+    <input class="input1" type="text" name="model" placeholder="ادخل موديل السيارة" /><br />
+    <input class="input1" type="text" name="aircondition" placeholder="ادخل نوع المبرد" /><br />
+    <label>ادخل اخر تاريخ تم فيه صيانة المبرد</label><br />
+    <input class="input1" type="date" name="aircondition_fix_date" /><br />
+    <label>ادخل اخر تاريخ لترخيص السيارة</label><br />
+    <input class="input1" type="date" name="car_license_date" /><br />
+    <input type="submit" value="اضافة السيارة" class="btn btn-primary" />
+</form>
+<% } %>
+
+<% if(caritems.cars.length == 0) { %>
+    <div class="alert">لا توجد سيارات قد تم اضافتها حتى الان</div>
+<% } else { %>
+    <div class="alert">يوجد <%= caritems.cars.length %> سيارات</div>
+    <table>
+        <thead>
+            <th>رقم السيارة</th>
+            <th>موديل السيارة</th>
+            <th>نوع السيارة</th>
+            <th>الفرع</th>
+            <th>نوع المبرد</th>
+            <th>تاريخ صيانة المبرد</th>
+            <th>تاريخ ترخيص السيارة</th>
+            <th>تعديل</th>
+            <th>الغاء السيارة</th>
+        </thead>
+        <tbody>
+<% for(let i=0 ; i<caritems.cars.length ; i++) { %>
+        <tr>
+            <td data-label="رقم السيارة"><%= caritems.cars[i].name %></td>
+            <td data-label="الموديل"><%= caritems.cars[i].model %></td>
+            <td data-label="نوع السيارة"><%= caritems.cars[i].cartype %></td>
+            <td data-label="الفرع"><%= caritems.cars[i].branch %></td>
+            <td data-label="نوع المبرد"><%= caritems.cars[i].aircondition_type %></td>
+            <td data-label="تاريخ صيانة المبرد"><%= caritems.cars[i].aircondition_fixdate.toDateString() %></td>
+            <td data-label="تاريخ ترخيص السيارة"><%= caritems.cars[i].carlicense_date.toDateString() %></td>
+            <td data-label="تعديل">
+                    <input type="hidden" name="carid" value="<%= caritems.cars[i]._id %>"/>
+                    <a href="/updatecar1/<%= caritems.cars[i]._id %>"><input type="submit" value="تاريخ صيانة المبرد" class="btn btn-primary" /></a><br /><br />
+                    <a href="/updatecar2/<%= caritems.cars[i]._id %>"><input type="submit" value="تاريخ ترخيص السيارة" class="btn btn-primary" /></a>          
+            </td>
+            <td data-label="الغاء السيارة">
+                <form action="/cars/delete" method="POST">
+                    <input type="hidden" name="carid" value="<%= caritems.cars[i]._id %>"/>
+                    <input type="submit" value="الغاء السيارة" class="btn btn-danger" />             
+                </form>
+            </td>
+        </tr>
+<% } %>
+</tbody>
+</table>
+<% } %>
+
+<%- include('./parts/footer.ejs') %>
